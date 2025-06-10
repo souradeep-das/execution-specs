@@ -132,6 +132,7 @@ class Message:
     is_static: bool
     accessed_addresses: Set[Address]
     accessed_storage_keys: Set[Tuple[Address, Bytes32]]
+    accessed_contract_code_addresses: Set[Address]
     disable_precompiles: bool
     parent_evm: Optional["Evm"]
 
@@ -156,6 +157,7 @@ class Evm:
     error: Optional[EthereumException]
     accessed_addresses: Set[Address]
     accessed_storage_keys: Set[Tuple[Address, Bytes32]]
+    accessed_contract_code_addresses: Set[Address]
 
 
 def incorporate_child_on_success(evm: Evm, child_evm: Evm) -> None:
@@ -175,6 +177,9 @@ def incorporate_child_on_success(evm: Evm, child_evm: Evm) -> None:
     evm.accounts_to_delete.update(child_evm.accounts_to_delete)
     evm.accessed_addresses.update(child_evm.accessed_addresses)
     evm.accessed_storage_keys.update(child_evm.accessed_storage_keys)
+    evm.accessed_contract_code_addresses.update(
+        child_evm.accessed_contract_code_addresses
+    )
 
 
 def incorporate_child_on_error(evm: Evm, child_evm: Evm) -> None:

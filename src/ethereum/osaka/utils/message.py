@@ -51,6 +51,8 @@ def prepare_message(
     accessed_addresses.update(PRE_COMPILED_CONTRACTS.keys())
     accessed_addresses.update(tx_env.access_list_addresses)
 
+    accessed_contract_code_addresses = set()
+
     disable_precompiles = False
 
     if isinstance(tx.to, Bytes0):
@@ -77,6 +79,7 @@ def prepare_message(
         raise AssertionError("Target must be address or empty bytes")
 
     accessed_addresses.add(current_target)
+    accessed_contract_code_addresses.add(current_target)
 
     return Message(
         block_env=block_env,
@@ -94,6 +97,7 @@ def prepare_message(
         is_static=False,
         accessed_addresses=accessed_addresses,
         accessed_storage_keys=set(tx_env.access_list_storage_keys),
+        accessed_contract_code_addresses=accessed_contract_code_addresses,
         disable_precompiles=disable_precompiles,
         parent_evm=None,
     )
