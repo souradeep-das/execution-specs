@@ -124,15 +124,18 @@ jobs:
         id: changed
         run: |
           git fetch origin ${{ github.event.pull_request.base.ref }}
-          CHANGED_FILE=$(git diff --name-only origin/${{ github.event.pull_request.base.ref }} ${{ github.sha }} | grep '^src/' | head -n1 || true)
-          echo "changed_file=$CHANGED_FILE" >> $GITHUB_OUTPUT
+          CHANGED_FILES=$(git diff --name-only origin/${{ github.event.pull_request.base.ref }} ${{ github.sha }} | grep '^src/' || true)
+          echo "changed_files<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGED_FILES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
-      - name: Configure mutmut for changed file
-        if: steps.changed.outputs.changed_file != ''
+      - name: Configure mutmut for changed files
+        if: steps.changed.outputs.changed_files != ''
         run: |
           echo '[tool.mutmut]' > pyproject.toml
-          echo "paths_to_mutate = \"${{ steps.changed.outputs.changed_file }}\"" >> pyproject.toml
-          echo "tests_dir = \"tests/\"" >> pyproject.toml
+          FILES=$(echo "${{ steps.changed.outputs.changed_files }}" | awk '{printf "\"%s\", ", $0}' | sed 's/, $//')
+          echo "paths_to_mutate = [ $FILES ]" >> pyproject.toml
+          echo "tests_dir = [\"tests/\"]" >> pyproject.toml
           echo "debug = true" >> pyproject.toml
 
       - name: Verify mutmut config
