@@ -95,3 +95,27 @@ jobs:
       - uses: ./.github/actions/setup-env
       - name: Run optimized tests
         run: tox -e optimized
+
+  mutation-test:
+    runs-on: ubuntu-latest
+    needs: static
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+    
+      - name: Install mutmut
+        run: pip install mutmut==3.3.0
+
+      - name: Apply mutmut patch
+        run: |
+          git clone https://github.com/souradeep-das/mutate-execution-specs.git
+          cp mutate-execution-specs/mutmut.patch .
+          PATCHED_FILE=$(python3 -c "import mutmut, os; print(os.path.join(os.path.dirname(mutmut.__file__), '__main__.py'))")
+          patch $PATCHED_FILE < mutmut.patch
