@@ -145,7 +145,7 @@ jobs:
           echo "debug = true" >> pyproject.toml
 
       - name: Verify mutmut config
-        if: steps.changed.outputs.changed_file != ''
+        if: steps.changed.outputs.changed_files != ''
         run: |
           echo "pyproject.toml contents:"
           cat pyproject.toml
