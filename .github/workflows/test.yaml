@@ -113,6 +113,9 @@ jobs:
         with:
           python-version: "3.11"
     
+      - name: Install project with test dependencies
+        run: pip install -e '.[test]'
+
       - name: Install mutmut
         run: pip install mutmut==3.3.0
 
