@@ -102,7 +102,7 @@ jobs:
     if: github.event_name == 'pull_request'
     strategy:
       matrix:
-        fork: [frontier, london, shanghai, dao_fork]
+        fork: [frontier, homestead, tangerine_whistle, spurious_dragon, byzantium, constantinople, istanbul, berlin, london, paris, shanghai, cancun, prague, osaka]
     steps:
       - uses: actions/checkout@v4
         with:
