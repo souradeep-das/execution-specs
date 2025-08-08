@@ -132,7 +132,6 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Display changed files
-        if: steps.changed.outputs.changed_files != ''
         run: |
           echo "Changed files:"
           echo "${{ steps.changed.outputs.changed_files }}"
