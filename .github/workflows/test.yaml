@@ -161,3 +161,9 @@ jobs:
         run: |
           mkdir -p mutants/src
           cp -r src/* mutants/src/
+
+      - name: Run mutmut
+        if: steps.changed.outputs.changed_files != ''
+        run: |
+          mutmut run
+          mutmut results
