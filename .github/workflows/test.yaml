@@ -162,7 +162,7 @@ jobs:
       - name: Install project with test dependencies
         run: pip install '.[test]'
       - name: Install mutmut
-        run: pip install git+https://github.com/souradeep-das/mutmut.git@562d5c65ce156f46d2586bcff4b8e0add8b2be39
+        run: pip install git+https://github.com/souradeep-das/mutmut.git@cc99e509092ed232600712d9d77fb38be31f74ec
       - name: Find changed files for fork
         id: changed
         run: |
