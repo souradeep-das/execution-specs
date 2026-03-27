@@ -9,6 +9,7 @@ from ethereum_types.numeric import Uint
 from ethereum.exceptions import InvalidTransaction
 
 
+# tests here
 class TransactionTypeError(InvalidTransaction):
     """
     Unknown [EIP-2718] transaction type byte.
